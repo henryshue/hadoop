@@ -1,0 +1,50 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>flume monitor</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<script type="text/javascript">
+  function myrefresh() {
+    window.location.reload();
+  }
+  setTimeout('myrefresh()', 5000); //指定1秒刷新一次
+</script>
+</head>
+<body>
+	<h1 align="center">Flume Metrics Service</h1>
+  <div align="center">
+    <a href="/metrics/sys/index"><span th:text="${ip1}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/metrics/sys/index2"><span th:text="${ip2}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/metrics/sys/index3"><span th:text="${ip3}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <a href="/metrics/sys/index4"><span th:text="${ip4}"></a>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+	<br>
+	 <div align="center">
+	 <table border="1" width="90%">
+		<tr>
+			<td>Agent name</td>
+			<td>Listen in</td>
+			<td>All in</td>
+			<td>All out</td>
+			<td>In Rate(R/S)</td>
+			<td>Out Rate(R/S)</td>
+			<td>Capacity</td>
+			<td>Channel Size</td>
+			<td>Sink to</td>
+		</tr>
+		<tr th:each="metrics:${metricsList}">
+			<td th:text=${metrics.agentname}>agentname</td>
+			<td th:text=${metrics.listenin}>listenin</td>
+			<td th:text=${metrics.allin}>allin</td>
+			<td th:text=${metrics.allout}>allout</td>
+			<td th:text=${metrics.inrate}>inrate</td>
+			<td th:text=${metrics.outrate}>outrate</td>
+			<td th:text=${metrics.capacity}>capacity</td>
+			<td th:text=${metrics.channelsize}>channelsize</td>
+			<td th:text=${metrics.sinkto}>sinkto</td>
+	</table>
+  </div>	
+</body>
+
+</html>
