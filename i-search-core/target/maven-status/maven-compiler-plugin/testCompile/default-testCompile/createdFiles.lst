@@ -1,0 +1,9 @@
+cn\i\search\core\api\index\Person.class
+cn\i\search\core\common\ExcelUtil.class
+cn\i\search\core\api\index\DocumentIndexServiceTest.class
+cn\i\search\core\common\NewsUtil.class
+cn\i\search\core\common\NoticeUtil.class
+cn\i\search\core\api\index\InitDocumentTest.class
+cn\i\search\core\api\query\TransportClientTest.class
+cn\i\search\core\api\index\IndexServiceTest.class
+cn\i\search\core\common\BaseTestCase.class

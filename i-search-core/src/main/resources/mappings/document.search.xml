@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<datasets>
+	<dataset id="settings" description="设置索引">
+    <![CDATA[
+    		{
+    			"max_result_window":"100000",
+    			"number_of_replicas":"0",
+    			"number_of_shards":"1",
+    			"analysis":{
+    			    "analyzer":{
+    				"my_ik_smart":{
+    				  "type":"custom",
+    				      "tokenizer":"ik_smart"
+    				      },
+    				      "my_max_word":{
+    				      "type":"custom",
+    				      "tokenizer":"ik_max_word"
+    				      },
+    				      "my_path_analyzer":{
+    				        "lowercase":"true",
+    				          "pattern":"/",
+    				          "type":"pattern"
+    				          },
+    				      "my_path_analyzer_search": {
+    				         "lowercase":"true",
+    				           "pattern":"/",
+    				           "type":"pattern"
+    				          },
+    				        "my_path_analyzer2": {
+    				          "tokenizer": "myedgetoken"
+    				         }
+    				       },
+    				       "tokenizer":{
+    				         "myedgetoken":{
+    				             "type":"edge_ngram",
+    				             "min_gram":1,
+    				             "max_gram":10,
+    				             "token_chars":["letter"]
+    				            }
+    				          },			          				   
+    				      "filter":{
+    				"my_path_filter":{
+    				      "type":"pattern_capture",
+    				      "preserve_original":true,
+    				      "patterns":"/"
+    				    },
+    				"myedge":{
+    				      "type":"edge_ngram",
+    				      "min_gram":2,
+    				      "max_gram":15,
+    				      "token_chars":["letter","digit"]
+    			}
+    	     }
+    	       }
+    	       }
+    ]]>
+	</dataset>
+	<dataset id="mappings" description="设置Mapping">
+	<![CDATA[
+	{
+		"dynamic": false,
+		"_all":{
+		  "enabled": false
+		},
+		"_source":{
+		  "excludes": [
+		    "file"
+		  ]
+		},
+		"properties":{
+		  "file": {
+		    "type": "text"
+		  },
+		  "filename": {
+		    "type": "text",
+		    "analyzer": "my_max_word"
+		  },
+		  "filePath":{
+		    "type": "keyword"
+		  },
+		  "attachment":{
+		    "properties":{
+		      "content":{
+		        "type":"text",
+		        "analyzer":"my_max_word"
+		      },
+		      "author":{
+		        "type":"keyword"
+		      },
+		      "title":{
+		        "type":"text",
+		        "analyzer":"my_max_word"
+		      },
+		      "date":{
+		        "type":"date"
+		      }
+		    }
+		}
+ 	  }
+ 	}
+  ]]> 		
+  </dataset>
+  <dataset id="pipelineSettings" description="管道设置">
+    {
+      "description": "Extract attachment information",
+      "processors": [
+        {
+          "attachment": {
+            "field": "file",
+            "indexed_chars": -1
+          }
+        }
+      ]
+    } 
+  </dataset>	
+</datasets>

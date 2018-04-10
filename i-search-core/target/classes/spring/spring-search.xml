@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:p="http://www.springframework.org/schema/p"
+	xmlns:tx="http://www.springframework.org/schema/tx" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+  http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+  http://www.springframework.org/schema/tx
+  http://www.springframework.org/schema/tx/spring-tx-4.2.xsd
+  http://www.springframework.org/schema/context
+  http://www.springframework.org/schema/context/spring-context-4.2.xsd
+  http://www.springframework.org/schema/aop
+  http://www.springframework.org/schema/aop/spring-aop-4.2.xsd">
+  
+	<bean id="propertyConfigurer"
+		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>file:config/iszse-search/search.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="client" class="cn.i.search.core.elasticsearch.client.NativeClient">
+		<constructor-arg>
+			<value>${search.cluster.name}</value>
+		</constructor-arg>
+		<constructor-arg>
+			<value>${search.hosts}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="sqlClient" class="cn.i.search.core.elasticsearch.client.SQLClient">
+		<constructor-arg>
+			<value>${search.sql.hosts}</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="indexService" class="cn.i.search.core.elasticsearch.index.NativeIndexService"
+		factory-bean="client" factory-method="getIndexService">
+		<property name="batchCommitLength" value="${search.batchCommitLength}" />
+		<property name="batchCommitSize" value="${search.batchCommitSize}" />
+		<property name="batchConcurrendThread" value="${search.batchConcurrendThread}" />
+		<!-- <property name="batchTimeInterval" value="${search.batchTimeInterval}" 
+			/> <property name="batchRetryTimes" value="${search.batchRetryTimes}" /> -->
+	</bean>
+
+	<bean id="searchService" class="cn.i.search.core.elasticsearch.query.NativeQueryService"
+		factory-bean="client" factory-method="getQueryService"></bean>
+	<bean id="suggestService"
+		class="cn.i.search.core.elasticsearch.suggest.NativeSuggestService"
+		factory-bean="client" factory-method="getSuggestService"></bean>
+	<bean id="sqlSearchService" class="cn.i.search.core.elasticsearch.query.SQLQueryService"
+		factory-bean="sqlClient" factory-method="getQueryService"></bean>
+
+</beans>
